@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login/Signup Screen -->
+    <div id="auth-screen" class="screen active">
+        <div class="auth-container">
+            <header class="auth-header">
+                <h1><i class="fas fa-wallet"></i> Expense Tracker</h1>
+                <p>Track your expenses easily and efficiently</p>
+            </header>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="login-tab">Login</button>
+                <button class="tab-btn" id="signup-tab">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <p class="auth-switch">Don't have an account? <a href="#" id="switch-to-signup">Sign up here</a></p>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="signup-username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="signup-password" placeholder="Choose a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-mobile"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+                    <input type="tel" id="signup-mobile" placeholder="Enter your mobile number" required>
+                </div>
+                <div class="form-group otp-group" id="otp-section">
+                    <label for="signup-otp"><i class="fas fa-sms"></i> OTP</label>
+                    <div class="otp-input-container">
+                        <input type="text" id="signup-otp" placeholder="Enter OTP" maxlength="6">
+                        <button type="button" class="btn otp-btn" id="send-otp-btn">Send OTP</button>
+                    </div>
+                    <small class="otp-info">OTP will be sent to your mobile number</small>
+                </div>
+                <button type="submit" class="btn auth-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+                <p class="auth-switch">Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Main Expense Tracker Screen -->
+    <div id="expense-screen" class="screen">
+        <!-- Header Section -->
+        <header class="main-header">
+            <div class="header-content">
+                <h1><i class="fas fa-wallet"></i> Expense Tracker</h1>
+                <p>Track and manage your daily expenses</p>
+            </div>
+            <div class="user-info">
+                <span id="current-user">User</span>
+                <button id="logout-btn" class="btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+        
+        <main class="container">
+            <!-- Dashboard Section -->
+            <section class="dashboard-section">
+                <h2><i class="fas fa-chart-pie"></i> Expense Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="card total-card">
+                        <div class="card-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Expense</h3>
+                            <p class="amount" id="total-expense">₹0.00</p>
+                            <p class="card-subtitle">Overall spending</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card month-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Current Month</h3>
+                            <p class="amount" id="current-month">February</p>
+                            <p class="card-subtitle" id="month-expense">This month: ₹0.00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Top Category</h3>
+                            <p class="amount" id="top-category">None</p>
+                            <p class="card-subtitle">Most spent category</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category Breakdown -->
+                <div class="category-breakdown">
+                    <h3><i class="fas fa-chart-bar"></i> Category Breakdown</h3>
+                    <div class="category-list" id="category-totals">
+                        <!-- Category totals will be inserted here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Add Expense Section -->
+            <section class="add-expense-section">
+                <h2><i class="fas fa-plus-circle"></i> Add New Expense</h2>
+                <div class="card">
+                    <form id="expense-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="amount"><i class="fas fa-rupee-sign"></i> Amount (₹)</label>
+                                <input type="number" id="amount" placeholder="Enter amount" min="1" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="category"><i class="fas fa-tag"></i> Category</label>
+                                <select id="category" required>
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="Food">Food & Dining</option>
+                                    <option value="Travel">Travel & Transport</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Bills">Bills & Utilities</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date"><i class="fas fa-calendar"></i> Date</label>
+                                <input type="date" id="date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description"><i class="fas fa-file-alt"></i> Description (Optional)</label>
+                                <input type="text" id="description" placeholder="Add a brief description">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn add-btn">
+                                <i class="fas fa-plus"></i> Add Expense
+                            </button>
+                            <button type="button" class="btn reset-btn" id="reset-form">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        
+                        <div id="form-message" class="message"></div>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- Expense List Section -->
+            <section class="expense-list-section">
+                <h2><i class="fas fa-list"></i> Expense History</h2>
+                
+                <!-- Filter Controls -->
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="filter-category"><i class="fas fa-filter"></i> Filter by Category</label>
+                        <select id="filter-category">
+                            <option value="all">All Categories</option>
+                            <option value="Food">Food & Dining</option>
+                            <option value="Travel">Travel & Transport</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Bills">Bills & Utilities</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-month"><i class="fas fa-calendar"></i> Filter by Month</label>
+                        <select id="filter-month">
+                            <option value="all">All Months</option>
+                            <!-- Months will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <!-- Date Range Filter -->
+                    <div class="date-range-controls">
+                        <div class="date-range-group">
+                            <label for="filter-start-date"><i class="fas fa-calendar-day"></i> Start Date</label>
+                            <input type="date" id="filter-start-date">
+                        </div>
+                        <div class="date-range-group">
+                            <label for="filter-end-date"><i class="fas fa-calendar-day"></i> End Date</label>
+                            <input type="date" id="filter-end-date">
+                        </div>
+                        <button id="apply-date-range" class="btn filter-btn">
+                            <i class="fas fa-filter"></i> Apply Date Range
+                        </button>
+                    </div>
+                    
+                    <button id="clear-filters" class="btn clear-btn">
+                        <i class="fas fa-times"></i> Clear All Filters
+                    </button>
+                </div>
+                
+                <!-- Date Range Info -->
+                <div id="date-range-info" class="date-range-info" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Showing expenses from <span id="date-range-start"></span> to <span id="date-range-end"></span></span>
+                </div>
+                
+                <!-- Expense Table -->
+                <div class="card table-container">
+                    <table class="expense-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount (₹)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expense-table-body">
+                            <!-- Expenses will be inserted here -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="empty-state" class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h3>No expenses recorded yet</h3>
+                        <p>Add your first expense using the form above</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Visual Representation Section -->
+            <section class="visual-section">
+                <h2><i class="fas fa-chart-line"></i> Expense Visualization</h2>
+                <div class="visualization-container">
+                    <div class="chart-controls">
+                        <button class="btn chart-btn active" data-chart="category">By Category</button>
+                        <button class="btn chart-btn" data-chart="monthly">Monthly Trend</button>
+                        <button id="reset-chart" class="btn reset-btn">
+                            <i class="fas fa-redo"></i> Reset Chart
+                        </button>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="expense-chart"></canvas>
+                    </div>
+                    
+                    <!-- Color Legend -->
+                    <div class="color-legend">
+                        <h4><i class="fas fa-palette"></i> Category Colors</h4>
+                        <div class="legend-items" id="color-legend">
+                            <!-- Color legend will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="chart-info">
+                        <p>Visual representation of your spending patterns</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer Section -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <h3><i class="fas fa-wallet"></i> Expense Tracker</h3>
+                <p>Track your expenses • Manage your budget • Visualize your spending</p>
+                <p class="footer-note">Developed with HTML, CSS, and JavaScript • Data stored locally in your browser</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h3>
+            <p>Are you sure you want to delete this expense?</p>
+            <div class="modal-actions">
+                <button id="confirm-delete" class="btn delete-btn">Yes, Delete</button>
+                <button id="cancel-delete" class="btn cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

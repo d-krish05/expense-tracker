@@ -1010,7 +1010,11 @@ function showNotification(message, type) {
 document.addEventListener('DOMContentLoaded', initApp);
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("./service-worker.js")
-    .then(() => console.log("Service Worker Registered"));
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then(reg => console.log("SW registered", reg))
+      .catch(err => console.log("SW failed", err));
+  });
 }
+

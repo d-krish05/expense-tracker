@@ -1006,4 +1006,11 @@ function showNotification(message, type) {
 }
 
 // Initialize the application when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', initApp);
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./service-worker.js")
+    .then(() => console.log("Service Worker Registered"));
+}
